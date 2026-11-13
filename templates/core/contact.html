@@ -1,0 +1,92 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section-space bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <div class="text-center mb-5">
+                    <span class="eyebrow text-danger">CONTACTEZ-NOUS</span>
+                    <h1 class="fw-bold">Parlons de votre prochain véhicule</h1>
+                    <p class="text-secondary">
+                        Une question ou intéressé par un véhicule ?
+                        Envoyez-nous votre demande.
+                    </p>
+                </div>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close"
+                                    data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="card border-0 shadow-sm p-4 p-md-5">
+                    <form method="post" action="{% url 'core:contact' %}">
+                        {% csrf_token %}
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Nom complet</label>
+                                <input type="text" name="name"
+                                       class="form-control" required
+                                       maxlength="150"
+                                       placeholder="Votre nom complet">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Adresse e-mail</label>
+                                <input type="email" name="email"
+                                       class="form-control" required
+                                       placeholder="exemple@email.com">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Téléphone</label>
+                                <input type="tel" name="phone"
+                                       class="form-control" required
+                                       maxlength="30"
+                                       placeholder="+243 ...">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Sujet</label>
+                                <input type="text" name="subject"
+                                       class="form-control" required
+                                       maxlength="200"
+                                       placeholder="Objet de votre demande">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">Votre message</label>
+                                <textarea name="message"
+                                          class="form-control" rows="5"
+                                          required
+                                          placeholder="Écrivez votre message ici..."></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit"
+                                        class="btn btn-danger btn-lg w-100">
+                                    <i class="bi bi-send me-2"></i>
+                                    Envoyer ma demande
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

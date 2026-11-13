@@ -1,27 +1,181 @@
 {% extends 'base.html' %}
 {% block title %}CDKBusness — Roulez en grand, vivez la différence{% endblock %}
 {% block content %}
+
 <section class="hero-section">
-  <div class="container hero-content">
-    <div class="row align-items-center min-vh-hero">
-      <div class="col-lg-6 py-5">
-        <span class="eyebrow">BIENVENUE CHEZ CDKBUSNESS</span>
-        <h1>Roulez en grand,<br><span>vivez la différence !</span></h1>
-        <p class="hero-copy">Découvrez notre sélection de véhicules de qualité à des prix compétitifs.</p>
-        <a class="btn btn-danger btn-lg rounded-pill px-4" href="#catalogue">Explorer le catalogue <i class="bi bi-arrow-right"></i></a>
-        <div class="trust-row mt-5"><div><i class="bi bi-shield-check"></i><span>Achat sécurisé</span></div><div><i class="bi bi-headset"></i><span>Assistance client</span></div><div><i class="bi bi-truck"></i><span>Service en RDC</span></div></div>
-      </div>
-      <div class="col-lg-6 hero-car-wrap"><img class="hero-car" src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1400&q=90" alt="Voiture premium" /></div>
+    <div class="container hero-content">
+        <div class="row align-items-center min-vh-hero">
+            <div class="col-lg-7 py-5">
+                <span class="eyebrow">BIENVENUE CHEZ CDKBUSNESS</span>
+
+                <h1>
+                    Roulez en grand,<br>
+                    <span>vivez la différence !</span>
+                </h1>
+
+                <p class="hero-copy">
+                    Découvrez notre sélection de véhicules de qualité
+                    à des prix compétitifs.
+                </p>
+
+                <a class="btn btn-danger btn-lg rounded-pill px-4"
+                   href="#catalogue">
+                    Explorer le catalogue
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+
+                <div class="trust-row mt-5">
+                    <div>
+                        <i class="bi bi-shield-check"></i>
+                        <span>Achat sécurisé</span>
+                    </div>
+                    <div>
+                        <i class="bi bi-headset"></i>
+                        <span>Assistance client</span>
+                    </div>
+                    <div>
+                        <i class="bi bi-truck"></i>
+                        <span>Service en RDC</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
+
 <section class="section-space" id="catalogue"><div class="container">
   <div class="section-heading d-flex justify-content-between align-items-end mb-4"><div><span class="eyebrow text-danger">NOTRE SÉLECTION</span><h2>Nos véhicules vedettes</h2><p>Des modèles sélectionnés pour répondre à vos besoins.</p></div><a class="text-link" href="#contact">Voir tout <i class="bi bi-arrow-right"></i></a></div>
   <div class="row g-4">
     {% for vehicle in featured_vehicles %}
-    <div class="col-sm-6 col-xl-3"><article class="vehicle-card h-100"><div class="vehicle-image"><img src="{{ vehicle.image }}" alt="{{ vehicle.brand }} {{ vehicle.name }}" loading="lazy"><span class="vehicle-category">{{ vehicle.category }}</span><button class="favorite-btn" type="button" aria-label="Ajouter aux favoris"><i class="bi bi-heart"></i></button></div><div class="p-3"><div class="vehicle-year">{{ vehicle.year }}</div><h3>{{ vehicle.brand }} {{ vehicle.name }}</h3><div class="vehicle-price">{{ vehicle.price }}</div><div class="vehicle-meta"><span><i class="bi bi-star-fill"></i> 4.8</span><a href="#contact" class="btn btn-danger btn-sm rounded-pill"><i class="bi bi-chat-dots"></i> Demander</a></div></div></article></div>
+    
+<div class="col-sm-6 col-xl-3">
+  <article class="vehicle-card h-100">
+    <div class="vehicle-image">
+      {% if vehicle.image %}
+        <img src="{{ vehicle.image.url }}" alt="{{ vehicle.brand }} {{ vehicle.model }}" loading="lazy">
+      {% else %}
+        <div class="d-flex align-items-center justify-content-center h-100 bg-light">
+          <i class="bi bi-car-front fs-1 text-secondary"></i>
+        </div>
+      {% endif %}
+      <span class="vehicle-category">{{ vehicle.get_fuel_display }}</span>
+      <button class="favorite-btn" type="button" aria-label="Ajouter aux favoris">
+        <i class="bi bi-heart"></i>
+      </button>
+    </div>
+
+    <div class="p-3">
+      <div class="vehicle-year">{{ vehicle.year }}</div>
+      <h3>{{ vehicle.brand }} {{ vehicle.model }}</h3>
+      <div class="vehicle-price">{{ vehicle.price }} $</div>
+      <div class="vehicle-meta">
+        <span>{{ vehicle.get_transmission_display }}</span>
+        <a href="#contact" class="btn btn-danger btn-sm rounded-pill">
+          <i class="bi bi-chat-dots"></i> Demander
+        </a>
+      </div>
+    </div>
+  </article>
+</div>
+
     {% endfor %}
   </div>
 </div></section>
-<section class="benefits-section" id="apropos"><div class="container py-5"><div class="row g-4 text-center"><div class="col-md-4"><i class="bi bi-patch-check benefit-icon"></i><h3>Véhicules sélectionnés</h3><p>Des informations claires pour choisir en confiance.</p></div><div class="col-md-4"><i class="bi bi-chat-square-text benefit-icon"></i><h3>Conseil personnalisé</h3><p>Notre équipe vous accompagne dans votre recherche.</p></div><div class="col-md-4"><i class="bi bi-geo-alt benefit-icon"></i><h3>Présents en RDC</h3><p>Un service pensé pour nos clients en République démocratique du Congo.</p></div></div></div></section>
+
+<section class="section-space bg-light" id="contact">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <div class="text-center mb-5">
+                    <span class="eyebrow text-danger">CONTACTEZ-NOUS</span>
+                    <h2 class="fw-bold">Parlons de votre prochain véhicule</h2>
+                    <p class="text-secondary">
+                        Une question ou intéressé par un véhicule ?
+                        Envoyez-nous votre demande.
+                    </p>
+                </div>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close"
+                                    data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="card border-0 shadow-sm p-4 p-md-5">
+                    <form method="post" action="{% url 'core:contact' %}">
+                        {% csrf_token %}
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Nom complet
+                                </label>
+                                <input type="text" name="name"
+                                       class="form-control" required
+                                       maxlength="150"
+                                       placeholder="Votre nom complet">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Adresse e-mail
+                                </label>
+                                <input type="email" name="email"
+                                       class="form-control" required
+                                       placeholder="exemple@email.com">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Téléphone
+                                </label>
+                                <input type="tel" name="phone"
+                                       class="form-control" required
+                                       maxlength="30"
+                                       placeholder="+243 ...">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Sujet
+                                </label>
+                                <input type="text" name="subject"
+                                       class="form-control" required
+                                       maxlength="200"
+                                       placeholder="Objet de votre demande">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold">
+                                    Votre message
+                                </label>
+                                <textarea name="message"
+                                          class="form-control"
+                                          rows="5" required
+                                          placeholder="Écrivez votre message ici..."></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit"
+                                        class="btn btn-danger btn-lg w-100">
+                                    <i class="bi bi-send me-2"></i>
+                                    Envoyer ma demande
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

@@ -1,12 +1,50 @@
-from django.shortcuts import render
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from apps.catalogue.models import Vehicle
+from .models import ContactRequest
 
 
 def home(request):
-    """Render the CDKBusness public homepage."""
-    featured_vehicles = [
-        {"brand": "Toyota", "name": "Land Cruiser", "year": 2024, "price": "72 000 $", "category": "SUV", "image": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=85"},
-        {"brand": "BMW", "name": "Série 5", "year": 2023, "price": "65 000 $", "category": "Berline", "image": "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=900&q=85"},
-        {"brand": "Mercedes-Benz", "name": "GLC", "year": 2024, "price": "68 000 $", "category": "SUV", "image": "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=900&q=85"},
-        {"brand": "Audi", "name": "Q5", "year": 2023, "price": "62 000 $", "category": "SUV", "image": "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=900&q=85"},
-    ]
-    return render(request, "core/home.html", {"featured_vehicles": featured_vehicles})
+    featured_vehicles = Vehicle.objects.filter(
+        available=True
+    ).order_by("-created_at")[:4]
+
+    return render(
+        request,
+        "core/home.html",
+        {"featured_vehicles": featured_vehicles}
+    )
+
+
+def contact(request):
+    if request.method == "POST":
+        name = request.POST.get("name", "").strip()
+        email = request.POST.get("email", "").strip()
+        phone = request.POST.get("phone", "").strip()
+        subject = request.POST.get("subject", "").strip()
+        message = request.POST.get("message", "").strip()
+
+        if not all([name, email, phone, subject, message]):
+            messages.error(
+                request,
+                "Veuillez remplir tous les champs."
+            )
+            return redirect("core:contact")
+
+        ContactRequest.objects.create(
+            name=name,
+            email=email,
+            phone=phone,
+            subject=subject,
+            message=message
+        )
+
+        messages.success(
+            request,
+            "Votre demande a été envoyée avec succès. Merci !"
+        )
+
+        return redirect("core:contact")
+
+    return render(request, "core/contact.html")
